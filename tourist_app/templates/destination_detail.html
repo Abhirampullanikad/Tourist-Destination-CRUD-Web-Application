@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Destination</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<style>
+    body {
+        overflow-x:hidden;
+    }
+    body,html{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+</style>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'destination_list' %}">Tourist Destinations</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'destination_list' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'destination_create' %}">Add Destination</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="{% url 'destination_list' %}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search places..." name="q" value="{{ request.GET.q }}">
+                    <button class="btn btn-light" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Destination Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4">{{ destination.place_name }}</h1>
+        <div>
+            <a href="{% url 'destination_update' destination.id %}" class="btn btn-warning me-2">Edit</a>
+            <a href="{% url 'destination_delete' destination.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+
+    <!-- Destination Details -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Location Information</h5>
+                    <p class="card-text">
+                        <strong>State:</strong> {{ destination.state }}<br>
+                        <strong>District:</strong> {{ destination.district }}<br>
+                        <strong>Weather:</strong> {{ destination.weather }}<br>
+                        {% if destination.google_map_link %}
+                            <strong>Map:</strong> <a href="{{ destination.google_map_link }}" target="_blank">View on Google Maps</a>
+                        {% endif %}
+                    </p>
+                    
+                    <h5 class="card-title mt-4">Description</h5>
+                    <p class="card-text">{{ destination.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Section -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Images</h5>
+                    {% if destination.image %}
+                        <img src="{{ destination.image.url }}" class="img-fluid rounded mb-2" alt="{{ destination.place_name }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x300.png?text=No+Image+Available" class="img-fluid rounded mb-2" alt="No image available">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="{% url 'destination_list' %}" class="btn btn-secondary">Back to List</a>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center text-lg-start mt-5 border-top shadow-sm">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <h5 class="text-uppercase">Tourist Destinations</h5>
+                    <p>Discover beautiful places across India. Explore destinations with weather, maps, and details.</p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Quick Links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'destination_list' %}" class="text-dark">Home</a></li>
+                        <li><a href="{% url 'destination_create' %}" class="text-dark">Add Destination</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-dark">Email</a></li>
+                        <li><a href="#" class="text-dark">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center p-3 bg-secondary text-white">
+            © {{ year }} Tourist Destinations | Developed by Abhiram
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
